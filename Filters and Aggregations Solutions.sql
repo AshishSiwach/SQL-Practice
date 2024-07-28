@@ -1,0 +1,56 @@
+use "NamsateSQL";
+
+-- create null values
+update Orders
+set city = null
+where Order_ID in ('CA-2020-161389', 'US-2021-156909');
+
+-- ASSIGNMENT QUESTION 1
+SELECT *
+FROM Orders
+WHERE City IS NULL;
+
+-- ASSIGNMENT QUESTION 2
+SELECT SUM(Profit) AS TOTAL_PROFIT, MIN(Order_Date) AS FIRST_ORDER_DATE, MAX(Order_Date) AS LAST_ORDER_DATE
+FROM Orders;
+
+-- ASSIGNMENT QUESTION 3
+SELECT Sub_Category
+FROM Orders
+GROUP BY Sub_Category
+HAVING AVG(Profit) > MAX(Profit)/2;
+
+--ASSIGNMENT QUESTION 4
+CREATE TABLE EXAMS(STUDENT_ID INT, SUBJECT VARCHAR(20), MARKS INT);
+INSERT INTO EXAMS VALUES(1,'Chemistry',91),(1,'Physics',91),(1,'Maths',92)
+,(2,'Chemistry',80),(2,'Physics',90)
+,(3,'Chemistry',80),(3,'Maths',80)
+,(4,'Chemistry',71),(4,'Physics',54)
+,(5,'Chemistry',79);
+
+SELECT * FROM EXAMS;
+
+SELECT STUDENT_ID, MARKS, COUNT(STUDENT_ID)
+FROM EXAMS
+WHERE SUBJECT IN ('Physics', 'Chemistry')
+GROUP BY STUDENT_ID, MARKS
+HAVING COUNT(1) = 2;
+-- (1, 91) COMBINATION OCCURES TWICE WHILE (2, 80), (3, 80), (4, 71), (4, 54), (5, 79) OCCUR JUST ONCE
+
+-- ASSIGNMENT QUESTION 5
+SELECT Category, COUNT(DISTINCT Product_ID) AS TOTAL_PRODUCTS
+FROM Orders
+GROUP BY Category;
+
+-- ASSIGNMENT QUESTION 6
+SELECT TOP 5 Sub_Category, SUM(Quantity) AS TOTAL_QUANTITY
+FROM Orders
+WHERE Region = 'West'
+GROUP BY Sub_Category
+ORDER BY TOTAL_QUANTITY DESC;
+
+-- ASSIGNMENT QUESTION 7
+SELECT Region, Ship_Mode, SUM(Sales) AS TOTAL_SALES
+FROM Orders
+WHERE Order_Date BETWEEN '2020-01-01' AND '2020-12-31'
+GROUP BY Region, Ship_Mode;
